@@ -120,18 +120,19 @@ show_banner() {
     clear
     echo -e "${PURPLE}${BOLD}"
     cat << "EOF"
-    ╔══════════════════════════════════════════════════════════════════════╗
-    ║                                                                      ║
-    ║    ████████╗ ██████╗  ███████╗  █████╗  ███╗   ███╗  ██████╗ ███████╗║
-    ║    ██╔═══██║██╔══██╗ ██╔════╝ ██╔══██╗ ████╗ ████║ ██╔═══██╗██╔════╝║
-    ║    ██║   ██║██████╔╝ █████╗   ███████║ ██╔████╔██║ ██║   ██║███████╗║
-    ║    ██║   ██║██╔══██╗ ██╔══╝   ██╔══██║ ██║╚██╔╝██║ ██║   ██║╚════██║║
-    ║    ████████║██║  ██║ ███████╗ ██║  ██║ ██║ ╚═╝ ██║ ╚██████╔╝███████║║
-    ║    ╚═══════╝╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝ ╚═╝     ╚═╝  ╚═════╝ ╚══════╝║
-    ║                                                                      ║
-    ║                    Professional Installation Suite                   ║
-    ║                    --> Version 2.0 - K3s Deployment                  ║
-    ╚══════════════════════════════════════════════════════════════════════╝
+    ╔═══════════════════════════════════════════════════════════════════════════╗
+    ║                                                                           ║
+    ║    ████████╗ ██████╗  ███████╗  █████╗  ███╗   ███╗  ██████╗  ███████╗    ║
+    ║    ██╔═══██║ ██╔══██╗ ██╔════╝ ██╔══██╗ ████╗ ████║ ██╔═══██╗ ██╔════╝    ║
+    ║    ██║   ██║ ██████╔╝ █████╗   ███████║ ██╔████╔██║ ██║   ██║ ███████╗    ║
+    ║    ██║   ██║ ██╔══██╗ ██╔══╝   ██╔══██║ ██║╚██╔╝██║ ██║   ██║ ╚════██║    ║
+    ║    ████████║ ██║  ██║ ███████╗ ██║  ██║ ██║ ╚═╝ ██║ ╚██████╔╝ ███████║    ║
+    ║    ╚═══════╝ ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝ ╚═╝     ╚═╝  ╚═════╝  ╚══════╝    ║  
+    ║                                                                           ║
+    ║                    Professional Installation Suite                        ║ 
+    ║                    --> Version 2.0 - K3s Deployment                       ║ 
+    ║                                                                           ║                      
+    ╚═══════════════════════════════════════════════════════════════════════════╝
 EOF
     echo -e "${NC}"
     
@@ -282,10 +283,11 @@ setup_environment_variables() {
     K3S_SHARE_PARAM=" -v /usr/local/bin/kubectl:/usr/local/bin/kubectl:ro -v ~/.kube/config:/root/.kube/config:ro"
     LOG_LIMIT_PARAM="--log-opt max-size=10m --log-opt max-file=3"
     DOCKER_HUB_NAMESPACE="ghcr.io/eclipse-autowrx"
+    DOCKER_HUB_NAMESPACE1="danh22'
     
     # Export variables for use throughout the script
     export DK_USER CURRENT_DIR ARCH RUNTIME_NAME XDG_RUNTIME_DIR HOME_DIR
-    export DOCKER_SHARE_PARAM DOCKER_AUDIO_PARAM K3S_SHARE_PARAM LOG_LIMIT_PARAM DOCKER_HUB_NAMESPACE
+    export DOCKER_SHARE_PARAM DOCKER_AUDIO_PARAM K3S_SHARE_PARAM LOG_LIMIT_PARAM DOCKER_HUB_NAMESPACE DOCKER_HUB_NAMESPACE1
     
     show_info "Environment configured for user: ${BOLD}$DK_USER${NC}"
     show_info "Architecture: ${BOLD}$ARCH${NC} (${ARCH_DETECT})"
@@ -435,7 +437,7 @@ apply_manifest() {
     # -----------------------------------------------------------------
     # make all placeholders available to envsubst
     # -----------------------------------------------------------------
-    export DOCKER_HUB_NAMESPACE ARCH DK_USER RUNTIME_NAME HOME_DIR \
+    export DOCKER_HUB_NAMESPACE DOCKER_HUB_NAMESPACE1 ARCH DK_USER RUNTIME_NAME HOME_DIR \
         dk_vip_demo DISPLAY XDG_RUNTIME_DIR
 
     # -----------------------------------------------------------------
@@ -447,7 +449,7 @@ apply_manifest() {
     # Create tmp directory for parsed manifests
     mkdir -p "$tmp_dir"
     
-    local VARS='${DOCKER_HUB_NAMESPACE} ${ARCH} ${DK_USER} ${RUNTIME_NAME} \
+    local VARS='${DOCKER_HUB_NAMESPACE} ${ARCH} ${DK_USER} ${RUNTIME_NAME} ${DOCKER_HUB_NAMESPACE1}\
                 ${HOME_DIR} ${dk_vip_demo} ${DISPLAY} ${XDG_RUNTIME_DIR}'
     
     show_info "Processing manifest: ${BOLD}${yaml}${NC}"
@@ -728,9 +730,9 @@ perform_software_updates() {
 
         # Decide which manifest to apply and force update
         if [ -f "/etc/nv_tegra_release" ]; then
-            apply_manifest_with_force_update "dk-ivi-jetson.yaml" "dk-ivi" "${DOCKER_HUB_NAMESPACE}/dk_ivi:latest"
+            apply_manifest_with_force_update "dk-ivi-jetson.yaml" "dk-ivi" "${DOCKER_HUB_NAMESPACE1}/dk_ivi:latest"
         else
-            apply_manifest_with_force_update "dk-ivi.yaml" "dk-ivi" "${DOCKER_HUB_NAMESPACE}/dk_ivi:latest"
+            apply_manifest_with_force_update "dk-ivi.yaml" "dk-ivi" "${DOCKER_HUB_NAMESPACE1}/dk_ivi:latest"
         fi
     else
         if [[ "$update_mode" == "update" ]]; then
@@ -944,6 +946,7 @@ XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}"
 DOCKER_AUDIO_PARAM="${DOCKER_AUDIO_PARAM}"
 LOG_LIMIT_PARAM="${LOG_LIMIT_PARAM}"
 DOCKER_HUB_NAMESPACE="${DOCKER_HUB_NAMESPACE}"
+DOCKER_HUB_NAMESPACE1="${DOCKER_HUB_NAMESPACE1}"
 dk_ivi_value="${dk_ivi_value}"
 zecu_value="${zecu_value}"
 swupdate_value="${swupdate_value}"
