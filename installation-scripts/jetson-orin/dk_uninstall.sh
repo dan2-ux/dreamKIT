@@ -21,6 +21,7 @@ echo "username: $DK_USER"
 # Set Env Variables
 HOME_DIR="/home/$DK_USER"
 DOCKER_HUB_NAMESPACE="ghcr.io/eclipse-autowrx"
+DOCKER_HUB_NAMESPACE1="danh22"
 DK_CONTAINER_LIST="dk_manager dk_ivi sdv-runtime dk_appinstallservice"
 
 echo "Env Variables:"
@@ -51,7 +52,7 @@ echo "Delete dk_manager image ..."
 docker rmi -f $DOCKER_HUB_NAMESPACE/dk_manager:latest
 
 echo "Delete dk_ivi image ..."
-docker rmi -f $DOCKER_HUB_NAMESPACE/dk_ivi:latest
+docker rmi -f $DOCKER_HUB_NAMESPACE1/dk_ivi:latest
 
 echo "Delete sdv-runtime image ..."
 docker rmi -f $DOCKER_HUB_NAMESPACE/sdv-runtime:latest
